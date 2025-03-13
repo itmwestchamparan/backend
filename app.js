@@ -36,23 +36,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Update the CORS configuration
 app.use(cors({
-  origin: ['https://igotnew.netlify.app', 'http://localhost:3000'],
+  origin: ['https://igotnew.netlify.app', 'http://localhost:3000', 'http://localhost:5173'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
 }));
 
 // Define routes
 app.use('/', indexRouter);
-app.use('/api', (req, res) => {
-  res.json({ message: 'Welcome to the Online Reporting API' });
-});
-app.use('/api/users', usersRouter);
 
 // Add routes for our application
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/offices', require('./routes/offices'));
 app.use('/api/employees', require('./routes/employees'));
+app.use('/api/users', usersRouter);
+
+// General API welcome message (moved after specific routes)
+app.use('/api', (req, res) => {
+  res.json({ message: 'Welcome to the Online Reporting API' });
+});
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
