@@ -46,6 +46,9 @@ app.use(cors({
 
 // Define routes
 app.use('/', indexRouter);
+app.use('/api', (req, res) => {
+  res.json({ message: 'Welcome to the Online Reporting API' });
+});
 app.use('/api/users', usersRouter);
 
 // Add routes for our application
