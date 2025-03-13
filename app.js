@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Update the CORS configuration
 app.use(cors({
-  origin: true,
+  origin: ['https://igotnew.netlify.app', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -75,7 +75,15 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Send JSON response for API routes
+  if (req.path.startsWith('/api')) {
+    return res.status(err.status || 500).json({
+      success: false,
+      error: err.message || 'Server Error'
+    });
+  }
+
+  // render the error page for non-API routes
   res.status(err.status || 500);
   res.render('error');
 });
