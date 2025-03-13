@@ -36,9 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Update the CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'https://igotnew.netlify.app'
-    : ['http://localhost:3000', 'https://igotnew.netlify.app'],
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
